@@ -7,7 +7,13 @@ import { UserEvents } from "./UserEvents.js";
 import { UserNotifications } from "./UserNotifications.js";
 
 // Event have a 1..1 relation with Notification
-Event.hasOne(Notification);
+Event.hasOne(Notification,{
+    foreignKey: {
+        name: 'eventId',
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }, sourceKey: 'id'
+});
 Notification.belongsTo(Event, {
     foreignKey: {
         name: 'eventId',
@@ -32,13 +38,13 @@ Role.hasMany(User, {
     }, sourceKey: 'id'
 })
 
-// User have a n..n relation with UserEvents
+// User have a n..n relation with UserEvents and Event have a n..n relation with UserEvents
 
 User.belongsToMany(Event, {
     through: UserEvents,
     foreignKey: 'userId',
     otherKey: 'eventId',
-    through: UserEvents
+    through: UserEvents,
 });
 Event.belongsToMany(User, {
     through: UserEvents,
@@ -47,7 +53,7 @@ Event.belongsToMany(User, {
     through: UserEvents
 });
 
-// User have a n..n relation with UserNotifications
+// User have a n..n relation with UserNotifications and Notification have a n..n relation with UserNotifications
 User.belongsToMany(Notification, {
     through: UserNotifications,
     foreignKey: 'userId',
