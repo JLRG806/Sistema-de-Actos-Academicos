@@ -1,6 +1,4 @@
 import { Event } from "../models/sequelize/Event.js";
-import { UserEvents } from "../models/sequelize/UserEvents.js";
-import { User } from "../models/sequelize/User.js";
 export const eventsController = {}
 
 eventsController.getEvents = async (req, res) => {
@@ -45,7 +43,7 @@ eventsController.createEvent = async (req, res) => {
 
         await newEvent.addUsers(userIdList)
         await newEvent.save()
-        
+
         const userEvents = await newEvent.getUsers()
 
         res.json({ event: newEvent, users: userEvents })
