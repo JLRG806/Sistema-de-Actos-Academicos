@@ -26,15 +26,18 @@ export const cookieJWTauthUser = async (req, res, next) => {
 export const cookieJWTauthAdmin = async (req, res, next) => {
 
     try {
-        const token = req.cookies.token
-        if (!token) {
+        const token = req.headers.authorization.split(' ')[1]
 
+        const email = req.body.email
+        const password = req.body.password
+
+        if (!token) {
             return res.status(401).json(defaultResponse({ errorMessage: 'Unauthorized', errorStatus: true }))
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(decoded)
-        const isAdmin = isAdministrator(decoded.email, decoded.password)
+        
+        const isAdmin = isAdministrator(email, password)
         if (!isAdmin) {
             return res.status(401).json(defaultResponse({ errorMessage: 'Unauthorized', errorStatus: true }))
         }
@@ -42,13 +45,13 @@ export const cookieJWTauthAdmin = async (req, res, next) => {
         req.userData = decoded
         next()
     } catch (error) {
-        //res.clearCookie('token')
+        console.log(error)
         return res.status(401).json(defaultResponse({ errorMessage: 'Unauthorized', errorStatus: true }))
     }
 }
 
 export const createJWT = (res, fullName, email) => {
-    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: '5m' })
+    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: '20m' })
     res.cookie('token', token, { httpOnly: true, secure: true })
     return token
 }
