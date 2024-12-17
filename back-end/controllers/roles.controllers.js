@@ -1,10 +1,11 @@
 import { Role } from "../models/sequelize/Role.js";
+import { defaultResponse } from "../utils/index.js";
 export const rolesController = {}
 
 rolesController.getRoles = async (req, res) => {
     try {
         const roles = await Role.findAll()
-        res.json(roles)
+        res.json(defaultResponse({ data: { roles: roles } }))
     } catch (error) {
         res.status(500).json({ message: "Error getting roles" })
     }
