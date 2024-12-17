@@ -7,7 +7,7 @@ import config from '../config/config.js'
  * @param {string} password - The password of the user
  * @returns {boolean} - True if the user is an administrator, false otherwise
  */
-export const isAdministrator = async (email, password) => {
+export const isAdministrator = (email, password) => {
     const adminEmail = config.admin.email
     const adminPassword = config.admin.password
     if (email === adminEmail && password === adminPassword) {
