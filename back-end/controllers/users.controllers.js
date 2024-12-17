@@ -33,7 +33,7 @@ usersController.login = async (req, res) => {
 
         if (await argon2.verify(user.password, password)) {
             createJWT(res, email, user.fullName)
-            return res.senStatus(200)
+            return res.sendStatus(200)
         } else {
             return res.status(401).json(defaultResponse({ errorMessage: 'Invalid password', errorStatus: true }))
         }
@@ -71,6 +71,11 @@ usersController.register = async (req, res) => {
 
         return res.status(500).json(defaultResponse({ errorMessage: 'Error creating user', errorStatus: true }))
     }
+}
+
+usersController.logout = async (req, res) => {
+    res.clearCookie('token')
+    return res.sendStatus(200)
 }
 
 usersController.getUsers = async (req, res) => {
