@@ -1,6 +1,8 @@
 import { User } from '../models/sequelize/User.js'
 import argon2 from 'argon2'
 import { defaultResponse } from '../utils/index.js'
+import { createJWT } from '../middlewares/cookieJWTauth.js'
+import { isAdministrator } from '../utils/index.js'
 
 export const usersController = {}
 
@@ -9,10 +11,9 @@ usersController.login = async (req, res) => {
     try {
         const { email, password } = req.body
 
-        if (isAdministrator) {
-
-            defaultResponse.message = 'Logged in as administrator'
-            
+        const isAdmin = isAdministrator(email, password)
+        if (isAdmin) {
+            createJWT(res, "Admin", email)
             return res.json(defaultResponse({ message: 'Logged in as administrator' }))
         }
 
@@ -23,12 +24,11 @@ usersController.login = async (req, res) => {
         })
 
         if (!user) {
-            defaultResponse.error.message = 'User not found'
-            defaultResponse.error.status = true
-            return res.status(404).json(defaultResponse)
+            return res.status(404).json(defaultResponse({ errorMessage: 'User not found', errorStatus: true }))
         }
 
         if (await argon2.verify(user.password, password)) {
+            createJWT(res, email, user.fullName)
             return res.senStatus(200)
         } else {
             return res.status(401).json(defaultResponse({ errorMessage: 'Invalid password', errorStatus: true }))
