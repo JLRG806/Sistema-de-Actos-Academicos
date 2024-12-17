@@ -47,12 +47,12 @@ export const cookieJWTauthAdmin = async (req, res, next) => {
     }
 }
 
-export const createJWT = async (res, email, password) => {
-    const token = jwt.sign({ email: email, password: password }, process.env.JWT_SECRET, { expiresIn: '5m' })
+export const createJWT = (res, fullName, email) => {
+    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: '5m' })
     res.cookie('token', token, { httpOnly: true, secure: true })
     return token
 }
 
-export const deleteJWT = async (res) => {
+export const deleteJWT = (res) => {
     res.clearCookie('token')
 }
