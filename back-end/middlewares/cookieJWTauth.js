@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { isAdministrator, defaultResponse } from '../utils/index.js'
+import config from '../config/config.js'
 
 export const cookieJWTauthUser = async (req, res, next) => {
 
@@ -51,7 +52,7 @@ export const cookieJWTauthAdmin = async (req, res, next) => {
 }
 
 export const createJWT = (res, fullName, email) => {
-    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: config.jwt.expiresIn })
     res.cookie('token', token, { httpOnly: true, secure: true })
     return token
 }
