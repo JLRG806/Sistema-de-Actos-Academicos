@@ -38,6 +38,7 @@ usersController.login = async (req, res) => {
             return res.status(401).json(defaultResponse({ errorMessage: 'Invalid password', errorStatus: true }))
         }
     } catch (error) {
+        console.log(error)
         return res.status(500).json(defaultResponse({ errorMessage: 'Error logging in', errorStatus: true }))
     }
 
