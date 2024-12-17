@@ -11,6 +11,10 @@ usersController.login = async (req, res) => {
     try {
         const { email, password } = req.body
 
+        if (!email || !password) {
+            return res.status(400).json(defaultResponse({ errorMessage: 'Email and password required', errorStatus: true }))
+        }
+
         const isAdmin = isAdministrator(email, password)
         if (isAdmin) {
             createJWT(res, "Admin", email)
@@ -42,6 +46,10 @@ usersController.login = async (req, res) => {
 usersController.register = async (req, res) => {
     try {
         const { email, fullName, password } = req.body
+
+        if (!email || !fullName || !password) {
+            return res.status(400).json(defaultResponse({ errorMessage: 'Email, full name and password required', errorStatus: true }))
+        }
 
         const hashedPassword = await argon2.hash(password)
 
