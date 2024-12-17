@@ -12,6 +12,7 @@ app.use(express.json({ limit: "10MB" }))
 //app.use(middlewares.cors)
 app.use(morgan('dev'))
 
+
 // Routes
 app.use('/api', routes.rolesRoutes)
 app.use('/api', routes.usersRoutes)
@@ -23,8 +24,9 @@ async function main() {
     const result = await connect()
     if (result) {
         //await result.sync({ alter: true })
+        //await result.sync({ force: true })
         app.listen(config.PORT, () => {
-            console.log(`Server is running on http://127.0.0.1:3000`)
+            console.log(`Server is running on http://127.0.0.1:${config.PORT}`)
         })
     }
 }
