@@ -5,6 +5,7 @@ const router = Router();
 
 router.get("/login", usersController.login)
 router.post("/register", usersController.createUser)
+router.get("/logout", usersController.logout)
 
 router.get("/users", cookieJWTauthAdmin, usersController.getUsers)
 router.get("/users/:id", cookieJWTauthAdmin, usersController.getUser)
