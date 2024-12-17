@@ -4,7 +4,7 @@ import { isAdministrator, defaultResponse } from '../utils/index.js'
 export const cookieJWTauthUser = async (req, res, next) => {
 
     try {
-        const token = req.cookies.token
+        const token = req.req.cookies.token
         if (!token) {
             return res.status(401).json(defaultResponse({ errorMessage: 'Unauthorized', status: true }))
         }
@@ -26,7 +26,7 @@ export const cookieJWTauthUser = async (req, res, next) => {
 export const cookieJWTauthAdmin = async (req, res, next) => {
 
     try {
-        const token = req.headers.authorization.split(' ')[1]
+        const token = req.cookies.token
 
         const email = req.body.email
         const password = req.body.password
@@ -51,7 +51,7 @@ export const cookieJWTauthAdmin = async (req, res, next) => {
 }
 
 export const createJWT = (res, fullName, email) => {
-    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: '20m' })
+    const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
     res.cookie('token', token, { httpOnly: true, secure: true })
     return token
 }
