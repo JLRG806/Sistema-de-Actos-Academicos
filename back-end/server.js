@@ -1,5 +1,6 @@
 import express from 'express'
 import morgan from 'morgan'
+import cors from 'cors'
 import config from './config/config.js'
 import { connect } from './db/db.js'
 import routes from './routes/index.js'
@@ -7,11 +8,12 @@ import './models/sequelize/index.js'
 
 const app = express()
 
+app.use(morgan('dev'))
 app.use(express.json({ limit: "10MB" }))
+app.use(cors())
+
 //app.options('*', middlewares.cors)
 //app.use(middlewares.cors)
-app.use(morgan('dev'))
-
 
 // Routes
 app.use('/api', routes.rolesRoutes)
