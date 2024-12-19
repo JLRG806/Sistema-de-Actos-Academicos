@@ -3,7 +3,7 @@ import { usersController } from "../controllers/users.controllers.js";
 import { cookieJWTauthAdmin, cookieJWTauthUser } from "../middlewares/cookieJWTauth.js";
 const router = Router();
 
-router.get("/login", usersController.login)
+router.post("/login", usersController.login)
 router.post("/register", usersController.createUser)
 router.get("/logout", usersController.logout)
 
