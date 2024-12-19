@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
+  <style>
+    /* General */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #322902;
+      color: #FFFFFF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Register Container */
+    .register-container {
+      background-color: #FFFFFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 300px;
+      text-align: center;
+    }
+
+    .register-container h1 {
+      color: #322902;
+      margin-bottom: 20px;
+    }
+
+    .register-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #322902;
+      border-radius: 5px;
+    }
+
+    .register-container input:focus {
+      outline: none;
+      border-color: #F9CC0B;
+    }
+
+    .register-container button {
+      background-color: #F9CC0B;
+      color: #322902;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .register-container button:hover {
+      background-color: #e0b509;
+    }
+
+    .register-container p {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #322902;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h1>Registro</h1>
+    <form id="registerForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="fullName" placeholder="Nombre Completo" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <input type="text" id="roleId" placeholder="ID de Rol" required>
+      <button type="submit">Registrarse</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:5000/api';
+
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const fullName = document.getElementById('fullName').value;
+      const password = document.getElementById('password').value;
+      const roleId = document.getElementById('roleId').value;
+      const message = document.getElementById('message');
+
+      try {
+        const response = await fetch(`${API_URL}/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, fullName, password, roleId })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          message.style.color = 'green';
+          message.textContent = data.message || 'Registro exitoso, redirigiendo al login...';
+          setTimeout(() => {
+            window.location.href = '/login.html';
+          }, 2000);
+        } else {
+          const error = await response.json();
+          message.style.color = 'red';
+          message.textContent = error.message || 'Error en el registro';
+        }
+      } catch (err) {
+        message.style.color = 'red';
+        message.textContent = 'Error al conectar con el servidor';
+      }
+    });
+  </script>
+</body>
+</html>
