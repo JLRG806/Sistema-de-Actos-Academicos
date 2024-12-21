@@ -1,0 +1,88 @@
+/* General */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #322902;
+    color: #FFFFFF;
+}
+
+header {
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 10px;
+    text-align: center;
+}
+
+.custom-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 50px);
+}
+
+nav {
+    width: 20%;
+    background-color: #F9CC0B;
+    padding: 20px;
+    color: #322902;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 15px 0;
+}
+
+nav ul li button {
+    width: 100%;
+    background-color: #FFFFFF;
+    color: #322902;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+nav ul li button:hover {
+    background-color: #322902;
+    color: #FFFFFF;
+}
+
+main {
+    width: 80%;
+    padding: 20px;
+    background-color: #FFFFFF;
+    color: #322902;
+    overflow-y: auto;
+}
+
+.crud-container {
+    margin-top: 20px;
+}
+
+.crud-container form {
+    margin-bottom: 20px;
+}
+
+.crud-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.crud-container table,
+.crud-container th,
+.crud-container td {
+    border: 1px solid #322902;
+}
+
+.crud-container th,
+.crud-container td {
+    padding: 10px;
+    text-align: left;
+}
+
+.crud-container th {
+    background-color: #F9CC0B;
+    color: #322902;
+}
