@@ -5,7 +5,7 @@ import config from '../config/config.js'
 export const cookieJWTauthUser = async (req, res, next) => {
 
     try {
-        const token = req.req.cookies.token
+        const token = req.cookies.token
         if (!token) {
             return res.status(401).json(defaultResponse({ errorMessage: 'Unauthorized', status: true }))
         }
@@ -19,7 +19,8 @@ export const cookieJWTauthUser = async (req, res, next) => {
         req.userData = decoded
         next()
     } catch (error) {
-        res.clearCookie('token')
+        console.log(error)
+        //res.clearCookie('token')
         return res.status(401).json(defaultResponse({ errorMessage: 'Unauthorized', errorStatus: true }))
     }
 }
@@ -53,7 +54,7 @@ export const cookieJWTauthAdmin = async (req, res, next) => {
 
 export const createJWT = (res, fullName, email) => {
     const token = jwt.sign({ fullName: fullName, email: email }, process.env.JWT_SECRET, { expiresIn: config.jwt.expiresIn })
-    res.cookie('token', token, { httpOnly: true, secure: true })
+    res.cookie('token', token, { httpOnly: true, secure: false })
     return token
 }
 
