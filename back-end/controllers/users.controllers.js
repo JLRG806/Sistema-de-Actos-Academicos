@@ -32,7 +32,7 @@ usersController.login = async (req, res) => {
         }
 
         if (await argon2.verify(user.password, password)) {
-            createJWT(res, email, user.fullName)
+            createJWT(res, user.fullName, email)
             return res.sendStatus(200)
         } else {
             return res.status(401).json(defaultResponse({ errorMessage: 'Invalid password', errorStatus: true }))
@@ -81,6 +81,12 @@ usersController.logout = async (req, res) => {
 usersController.getUsers = async (req, res) => {
     try {
         const users = await User.findAll()
+
+        for (const user of users) {
+            const role = await user.getRole()
+            user.dataValues.role = role
+        }
+
         res.json(defaultResponse({ data: { users: users }, message: 'Users found' }))
     } catch (error) {
         res.status(500).json(defaultResponse({ errorMessage: 'Error getting users', errorStatus: true }))

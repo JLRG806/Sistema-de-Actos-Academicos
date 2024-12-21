@@ -42,3 +42,7 @@ export const defaultResponse = ({ data = null, message = '', errorMessage = '', 
         message: message
     }
 }
+
+export const redirectOnUnauthorized = (res) => {
+    return res.redirect('/')
+}

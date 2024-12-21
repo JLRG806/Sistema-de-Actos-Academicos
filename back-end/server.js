@@ -1,6 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import config from './config/config.js'
 import { connect } from './db/db.js'
 import routes from './routes/index.js'
@@ -8,12 +9,22 @@ import './models/sequelize/index.js'
 
 const app = express()
 
+// Middlewares
 app.use(morgan('dev'))
 app.use(express.json({ limit: "10MB" }))
-app.use(cors())
+app.use(cors({credentials: true, origin: `http://127.0.0.1:${config.PORT}`}))
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 
-//app.options('*', middlewares.cors)
-//app.use(middlewares.cors)
+// Static files
+app.use('/', express.static(`${process.cwd()}/public/front-end/`));
+app.use('/', express.static(`${process.cwd()}/public/front-end/views`));
+
+// Set Cache Control
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store')
+    next()
+})
 
 // Routes
 app.use('/api', routes.rolesRoutes)
@@ -34,3 +45,4 @@ async function main() {
 }
 
 main()
+console.log(`${process.cwd()}/public/`)
